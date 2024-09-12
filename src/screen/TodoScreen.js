@@ -21,12 +21,12 @@ const TodoScreen = () => {
             done: false,
         },
     ]);
+    const [searchQuery, setSearchQuery] = useState(""); // New state for search
     const [modalVisible, setModalVisible] = useState(false);
     const [viewedTodo, setViewedTodo] = useState(null);
     const [editModalVisible, setEditModalVisible] = useState(false);
     const [editedTodo, setEditedTodo] = useState(null);
 
-    // Function to add a new task to the list
     const addTodo = () => {
         if (todoTitle.trim() && todoDescription.trim()) {
             setTodoList([...todoList, { 
@@ -41,13 +41,11 @@ const TodoScreen = () => {
         }
     };
 
-    // Handle delete
     const handleDeleteTodo = (id) => {
         const updatedToDoList = todoList.filter((todo) => todo.id !== id);
         setTodoList(updatedToDoList);
     };
 
-    // Handle edit
     const handleEditTodo = (todo) => {
         if (!todo.done) {
             setEditedTodo(todo);
@@ -57,7 +55,6 @@ const TodoScreen = () => {
         }
     };
 
-    // Handle update
     const handleUpdateTodo = () => {
         const updatedTodos = todoList.map((item) => {
             if (item.id === editedTodo.id) {
@@ -72,7 +69,6 @@ const TodoScreen = () => {
         setEditModalVisible(false);
     };
 
-    // Toggle the "done" state of a task
     const toggleDone = (id) => {
         const updatedTodos = todoList.map((item) => {
             if (item.id === id) {
@@ -83,14 +79,25 @@ const TodoScreen = () => {
         setTodoList(updatedTodos);
     };
 
-    // Show task details in a modal
     const viewTaskDetails = (todo) => {
         setViewedTodo(todo);
         setModalVisible(true);
     };
 
+    // Filter the todoList based on the search query
+    const filteredTodos = todoList.filter(todo =>
+        todo.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <View style={{ marginHorizontal: 16 }}>
+            <TextInput
+                style={styles.input}
+                placeholder="Search tasks"
+                value={searchQuery}
+                onChangeText={setSearchQuery} // Update search query as user types
+            />
+
             <TouchableOpacity  
                 style={styles.addButton}
                 onPress={() => setEditModalVisible(true)}
@@ -98,9 +105,9 @@ const TodoScreen = () => {
                 <Text style={styles.addButtonText}>Add To Do</Text>
             </TouchableOpacity>
 
-            {todoList.length > 0 ? (
+            {filteredTodos.length > 0 ? (
                 <FlatList 
-                    data={todoList} 
+                    data={filteredTodos} // Display filtered tasks
                     renderItem={({ item }) => (
                         <View style={styles.todoItem}>
                             <Checkbox
@@ -234,7 +241,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,                   
         paddingVertical: hp('2%'),  
         marginVertical: hp('2%'),    
-        marginTop: hp('5%'),         
+        marginTop: hp('1%'),         
         alignItems: "center",
         justifyContent: "center",           
         shadowColor: "#000",
