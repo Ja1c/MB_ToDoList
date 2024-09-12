@@ -21,7 +21,7 @@ const TodoScreen = () => {
             done: false,
         },
     ]);
-    const [searchQuery, setSearchQuery] = useState(""); // New state for search
+    const [searchQuery, setSearchQuery] = useState(""); 
     const [modalVisible, setModalVisible] = useState(false);
     const [viewedTodo, setViewedTodo] = useState(null);
     const [editModalVisible, setEditModalVisible] = useState(false);
@@ -84,7 +84,6 @@ const TodoScreen = () => {
         setModalVisible(true);
     };
 
-    // Filter the todoList based on the search query
     const filteredTodos = todoList.filter(todo =>
         todo.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -95,7 +94,7 @@ const TodoScreen = () => {
                 style={styles.input}
                 placeholder="Search tasks"
                 value={searchQuery}
-                onChangeText={setSearchQuery} // Update search query as user types
+                onChangeText={setSearchQuery} 
             />
 
             <TouchableOpacity  
@@ -105,9 +104,12 @@ const TodoScreen = () => {
                 <Text style={styles.addButtonText}>Add To Do</Text>
             </TouchableOpacity>
 
+            {/* Separator Line */}
+            <View style={styles.separator} />
+
             {filteredTodos.length > 0 ? (
                 <FlatList 
-                    data={filteredTodos} // Display filtered tasks
+                    data={filteredTodos}
                     renderItem={({ item }) => (
                         <View style={styles.todoItem}>
                             <Checkbox
@@ -226,7 +228,8 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: "#FADFA1",            
         borderRadius: 15,                   
-        paddingVertical: 12,                
+        paddingVertical: 5,  
+        marginTop: hp('5%'),                       
         paddingHorizontal: 18,
         fontSize: 16,                       
         marginVertical: 12,                 
@@ -255,6 +258,11 @@ const styles = StyleSheet.create({
         fontSize: 20,                      
         letterSpacing: 1,                   
         textTransform: "uppercase",         
+    },
+    separator: {
+        height: 5,                          
+        backgroundColor: "#CCCCCC",        
+        marginVertical: 15,               
     },
     todoItem: {
         backgroundColor: "#FADFA1",         
